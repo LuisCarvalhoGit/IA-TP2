@@ -35,12 +35,15 @@ function [global_best_sol, global_best_fit, historico_best] = simulated_annealin
     % 2. Loop Principal - ARREFECIMENTO
     while T > T_min
         
+        temp_ratio = (T - T_min) / (T_inicial - T_min);
+        dynamic_step = max(0.05, temp_ratio * STEP_SIZE); % O passo diminui com T
+
         % 3. Loop Interno - Repetições na mesma temperatura [cite: 31]
         for i = 1:nRep
             
             % Gerar um vizinho aleatório
-            neighbor_x = current_sol_x + (rand() - 0.5) * 2 * step_size;
-            neighbor_y = current_sol_y + (rand() - 0.5) * 2 * step_size;
+            neighbor_x = current_sol_x + (rand() - 0.5) * 2 * dynamic_step;
+            neighbor_y = current_sol_y + (rand() - 0.5) * 2 * dynamic_step;
             
             % Garantir que o vizinho está dentro dos limites
             neighbor_x = max(interval_min, min(interval_max, neighbor_x));

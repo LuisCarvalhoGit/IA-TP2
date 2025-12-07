@@ -8,9 +8,9 @@ close all;
 % Parâmetros sugeridos no protocolo [cite: 31]
 T_inicial = 100;    % Temperatura inicial
 T_min = 0.1;      % Temperatura mínima (critério de paragem)
-alfa = 0.98;      % Fator de decaimento (0.8 = rápido, 0.99 = lento)
-nRep = 50;        % N. de repetições por temperatura
-STEP_SIZE = 0.1;    % Tamanho do passo
+alfa = 0.989;      % Fator de decaimento (0.8 = rápido, 0.99 = lento)
+nRep = 40;        % N. de repetições por temperatura
+STEP_SIZE = 0.2;    % Tamanho do passo
 PAUSE_TIME = 0.01;  % Pausa entre CADA ciclo de temperatura
 
 % (Assuma que as funções fobj_F1 e fobj_F2 estão definidas ou no path)
@@ -122,9 +122,6 @@ plot(global_best_sol_F1(1), global_best_sol_F1(2), 'c*', 'MarkerSize', 15, 'Line
 legend('Location', 'northwest');
 hold off;
 
-% =========================================================================
-% --- Visualização para a FUNÇÃO 2 (Rastrigin) ---
-% =========================================================================
 % =========================================================================
 % --- Visualização para a FUNÇÃO 2 (Rastrigin) ---
 % =========================================================================
