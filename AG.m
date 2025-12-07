@@ -6,8 +6,8 @@ clear; clc; close all;
 
 %% 1. PARÂMETROS E CONFIGURAÇÃO
 pop_size = 100;          % Tamanho da população
-lchrome = 12;           % Tamanho do cromossoma (bits)
-maxgen = 150;            % Número de gerações
+lchrome = 10;           % Tamanho do cromossoma (bits)
+maxgen = 80;            % Número de gerações
 p_cross = 0.75;         % Probabilidade de cruzamento
 p_mut = 0.003;           % Probabilidade de mutação
 num_vars = 2;           
