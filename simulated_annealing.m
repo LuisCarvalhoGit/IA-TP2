@@ -1,8 +1,7 @@
 function [global_best_sol, global_best_fit, hist_best, hist_current, hist_T] = simulated_annealing(fobj, interval_min, interval_max, T, T_min, alfa, nRep, step_size)
-% Simulated Annealing Atualizado
-% Retorna agora históricos de Temperatura e Custo Atual para análise
+%Script algoritmo Simulated Anealing
 
-    % 1. Inicialização
+    % Inicialização
     current_sol_x = interval_min + (interval_max - interval_min) * rand();
     current_sol_y = interval_min + (interval_max - interval_min) * rand();
     current_fit = fobj(current_sol_x, current_sol_y);
@@ -11,15 +10,15 @@ function [global_best_sol, global_best_fit, hist_best, hist_current, hist_T] = s
     global_best_sol = [current_sol_x, current_sol_y];
     
     % Históricos
-    hist_best = [];     % O melhor encontrado até agora
-    hist_current = [];  % Onde o "walker" está neste momento (pode subir e descer)
+    hist_best = [];     % melhor global
+    hist_current = [];  % atual
     hist_T = [];        % A temperatura em cada passo
     
-    % 2. Loop Principal
+    % Loop Principal
     while T > T_min
         
         for i = 1:nRep
-            % Vizinho (Passo Fixo)
+            % Vizinho
             dx = (rand() - 0.5) * 2 * step_size;
             dy = (rand() - 0.5) * 2 * step_size;
             

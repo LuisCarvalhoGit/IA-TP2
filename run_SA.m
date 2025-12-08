@@ -1,20 +1,18 @@
-% Script: run_SA_2D.m
 % Visualização 2D do Simulated Annealing + Gráficos de Análise
-% Fundo Escuro (Dark Mode)
 clear; clc; close all;
 
 % =========================================================================
 % --- CONFIGURAÇÕES ---
 % =========================================================================
 OPCAO_FUNCAO = 2;  % 1 (Schaffer) ou 2 (Rastrigin)
-VELOCIDADE = 2;    % 1 = Rápido (Resultado), 2 = Lento (Animação)
+VELOCIDADE = 1;    % 1 = Rápido (Resultado), 2 = Lento (Animação)
 
-% Parâmetros do SA (Conforme Protocolo)
-T_inicial = 100;
-T_min = 0.001;
-alfa = 0.90;      
+% Parâmetros do SA 
+T_inicial = 1000;
+T_min = 0.01;
+alfa = 0.995;      
 nRep = 20;
-STEP_SIZE = 0.2; % Passo Fixo
+STEP_SIZE = 0.5; 
 
 % Cores Dark Mode
 BG_COLOR = [0.1 0.1 0.1]; 
@@ -46,7 +44,7 @@ axis equal; axis([lim_min lim_max lim_min lim_max]);
 xlabel('x1'); ylabel('x2'); title([nome ' - Inicialização']);
 plot(0, 0, 'w+', 'MarkerSize', 15, 'LineWidth', 2); % Alvo
 
-% --- INICIALIZAÇÃO SA ---
+% Inicialização Simulated Anealing
 curr_x = lim_min + (lim_max - lim_min) * rand();
 curr_y = lim_min + (lim_max - lim_min) * rand();
 curr_fit = fobj(curr_x, curr_y);
@@ -69,12 +67,12 @@ path_x = [curr_x]; path_y = [curr_y];
 
 T = T_inicial;
 
-% --- LOOP PRINCIPAL ---
+% LOOP PRINCIPAL 
 while T > T_min
     it_count = it_count + 1;
     
     for i = 1:nRep
-        % Vizinho (Passo Fixo)
+        % Vizinho 
         nx = curr_x + (rand() - 0.5) * 2 * STEP_SIZE;
         ny = curr_y + (rand() - 0.5) * 2 * STEP_SIZE;
         nx = max(lim_min, min(lim_max, nx));
@@ -123,7 +121,7 @@ end
 fprintf('SA Concluído. A gerar gráficos...\n');
 
 % =========================================================================
-% --- GRÁFICOS DE ANÁLISE (DARK MODE) ---
+% --- GRÁFICOS DE ANÁLISE ---
 % =========================================================================
 
 % FIGURA 1: Temperatura

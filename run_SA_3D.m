@@ -1,4 +1,3 @@
-% Script: run_SA_3D.m
 % Visualização 3D do Simulated Annealing + Gráficos de Análise
 % Fundo Escuro (Dark Mode)
 clear; clc; close all;
@@ -64,7 +63,7 @@ path_x = [curr_x]; path_y = [curr_y]; path_z = [curr_fit+z_lift];
 
 T = T_inicial;
 
-% --- LOOP PRINCIPAL ---
+% LOOP PRINCIPAL
 while T > T_min
     it_count = it_count + 1;
     
@@ -117,7 +116,7 @@ end
 fprintf('SA Concluído. A gerar gráficos...\n');
 
 % =========================================================================
-% --- GRÁFICOS DE ANÁLISE (DARK MODE) ---
+% --- GRÁFICOS DE ANÁLISE ---
 % =========================================================================
 
 % FIGURA 1: Temperatura

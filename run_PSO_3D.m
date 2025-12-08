@@ -1,4 +1,3 @@
-% Script: run_PSO.m
 % Visualização 3D (Animação) + Gráficos de Análise Separados
 clear; clc; close all;
 
@@ -70,7 +69,7 @@ h_swarm = scatter3(pos(:,1), pos(:,2), pbest_val + z_lift, 50, 'k', 'filled');
 h_best = plot3(gbest_sol(1), gbest_sol(2), gbest_val + z_lift, 'p', ...
     'MarkerSize', 20, 'MarkerFaceColor', 'c', 'MarkerEdgeColor', 'k');
 
-% --- LOOP PRINCIPAL ---
+% LOOP PRINCIPAL 
 for it = 1:MAX_IT
     w = 0.9 - ((0.9 - 0.4) * it / MAX_IT);
     vals_plot = zeros(SWARM_SIZE, 1);
@@ -106,14 +105,14 @@ end
 fprintf('Animação concluída. A gerar gráficos de análise...\n');
 
 % =========================================================================
-% --- GRÁFICOS FINAIS INDEPENDENTES (DARK MODE) ---
+% --- GRÁFICOS FINAIS ---
 % =========================================================================
 
 % FIGURA 1: Evolução das Variáveis
 figure('Name', 'Evolução das Variáveis', 'Color', BG_COLOR);
 plot(1:MAX_IT, hist_gbest_pos(:,1), 'c-', 'LineWidth', 1.5, 'DisplayName', 'x1'); hold on;
 plot(1:MAX_IT, hist_gbest_pos(:,2), 'y-', 'LineWidth', 1.5, 'DisplayName', 'x2');
-yline(0, 'w--'); % Linha do zero ideal
+yline(0, 'w--'); 
 legend('Location', 'best', 'TextColor', AX_COLOR, 'EdgeColor', AX_COLOR);
 title('Evolução das Variáveis x1 e x2', 'Color', AX_COLOR);
 xlabel('Geração', 'Color', AX_COLOR); ylabel('Valor', 'Color', AX_COLOR);

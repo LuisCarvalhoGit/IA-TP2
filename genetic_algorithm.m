@@ -10,7 +10,10 @@ function [best_sol, best_fit, history_fit, viz_data] = genetic_algorithm(fobj, i
     best_sol = [0, 0];
     history_fit = zeros(1, generations);
     
-    % Históricos para os gráficos de evolução das variáveis (Fig 2)
+    % Inicializar variável para guardar o elite binário
+    elite_chrome = zeros(1, total_bits); 
+    
+    % Históricos para os gráficos de evolução das variáveis
     viz_data.hist_best_x = zeros(1, generations);
     viz_data.hist_best_y = zeros(1, generations);
     
@@ -40,22 +43,25 @@ function [best_sol, best_fit, history_fit, viz_data] = genetic_algorithm(fobj, i
             fitness(i) = 1 / (cost_val(i) + 1e-6); % Minimização
         end
         
-        % --- CAPTURA DE DADOS PARA GRÁFICOS ---
+        % Dados para os gráficos
         if gen == 1
             viz_data.gen1.x = pop_x;
             viz_data.gen1.y = pop_y;
-            viz_data.gen1.probs = fitness / sum(fitness); % Para a Roleta
+            viz_data.gen1.probs = fitness / sum(fitness); 
         end
         if gen == generations
             viz_data.final.x = pop_x;
             viz_data.final.y = pop_y;
         end
         
-        % 2. Estatísticas
+        % Estatísticas e Encontrar o Melhor
         [min_cost, idx_best] = min(cost_val);
         history_fit(gen) = min_cost;
         
-        % Guardar evolução das variáveis (para Fig 2)
+        % Guardamos a sequência de bits do melhor indivíduo atual antes de modificar a população
+        elite_chrome = CHROME(idx_best, :);
+        
+        % Guardar evolução das variáveis
         viz_data.hist_best_x(gen) = pop_x(idx_best);
         viz_data.hist_best_y(gen) = pop_y(idx_best);
         
@@ -66,7 +72,7 @@ function [best_sol, best_fit, history_fit, viz_data] = genetic_algorithm(fobj, i
         
         if gen == generations, break; end
         
-        % 3. Seleção (Roleta)
+        % Seleção (Roleta)
         sumfit = sum(fitness);
         probs = fitness / sumfit;
         cum_probs = cumsum(probs);
@@ -78,7 +84,7 @@ function [best_sol, best_fit, history_fit, viz_data] = genetic_algorithm(fobj, i
             New_CHROME(i, :) = CHROME(sel_idx, :);
         end
         
-        % 4. Cruzamento
+        % Cruzamento
         for i = 1:2:pop_size
             if rand() < p_cross
                 cut = randi([1, total_bits-1]);
@@ -87,8 +93,11 @@ function [best_sol, best_fit, history_fit, viz_data] = genetic_algorithm(fobj, i
             end
         end
         
-        % 5. Mutação
+        % Mutação
         mask = rand(pop_size, total_bits) < p_mut;
         CHROME = xor(New_CHROME, mask);
+        % Substituímos o primeiro indivíduo da nova população pelo Elite guardado
+        CHROME(1, :) = elite_chrome;
+        
     end
 end

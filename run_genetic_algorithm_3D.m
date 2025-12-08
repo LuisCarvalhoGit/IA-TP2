@@ -1,21 +1,20 @@
-% Script: run_GA_3D_Interactive.m
 % Visualização 3D Interativa (População Inicial vs Final)
-% + Gráficos de Análise Completos (Dark Mode)
+% + Gráficos de Análise Completos
 clear; clc; close all;
 
 % =========================================================================
-% --- CONFIGURAÇÕES ---
+%                                CONFIGURAÇÕES 
 % =========================================================================
 OPCAO_FUNCAO = 2;   % 1 (Schaffer) ou 2 (Rastrigin)
 
-% Parâmetros do Genético (Conforme Protocolo)
+% Parâmetros do Genético 
 POP_SIZE = 100;     
-GENERATIONS = 80;  
-L_CHROME = 10;      % 10 bits (gera o efeito de degraus)
+GENERATIONS = 100;  
+L_CHROME = 10;      % 10 bits 
 P_CROSS = 0.75;    
 P_MUT = 0.03;
 
-% Cores Dark Mode
+% cores
 BG_COLOR = [0.1 0.1 0.1]; 
 AX_COLOR = [1 1 1]; 
 
@@ -23,7 +22,7 @@ if OPCAO_FUNCAO == 1
     nome = 'Função 1 (Schaffer)';
     lim_min = -2.048; lim_max = 2.048;
     fobj = @(x,y) 0.5 + ((sin(sqrt(x.^2+y.^2))).^2-0.5) ./ ((1+0.001.*(x.^2+y.^2)).^2);
-    z_lift = 0.01; % Elevar pontos para não ficarem dentro do chão
+    z_lift = 0.01; 
 else
     nome = 'Função 2 (Rastrigin)';
     lim_min = -5.12; lim_max = 5.12;
@@ -34,7 +33,7 @@ end
 fprintf('=== Executando GA para Visualização 3D: %s ===\n', nome);
 
 % =========================================================================
-% --- EXECUÇÃO DO ALGORITMO (Recolha de Dados) ---
+%               EXECUÇÃO DO ALGORITMO (Recolha de Dados)
 % =========================================================================
 total_bits = L_CHROME * 2;
 CHROME = randi([0, 1], POP_SIZE, total_bits);
@@ -52,7 +51,7 @@ roulette_probs = [];
 
 for gen = 1:GENERATIONS
     
-    % 1. Descodificação
+    % Descodificação
     cost = zeros(POP_SIZE, 1);
     pop_x = zeros(POP_SIZE, 1);
     pop_y = zeros(POP_SIZE, 1);
@@ -91,7 +90,7 @@ for gen = 1:GENERATIONS
         data_final.x = pop_x; data_final.y = pop_y; data_final.z = cost;
     end
     
-    % 2. Operadores Genéticos
+    % Operadores Genéticos
     if gen < GENERATIONS
         fitness = 1 ./ (cost + 1e-6);
         probs = fitness / sum(fitness);
@@ -198,6 +197,6 @@ for k = 1:numel(p)
     if isgraphics(p(k),'Text')
         p(k).Color = AX_COLOR;
         val = str2double(strrep(p(k).String,'%',''));
-        if val < 2, p(k).String = ''; end % Limpar texto pequeno
+        if val < 2, p(k).String = ''; end 
     end
 end

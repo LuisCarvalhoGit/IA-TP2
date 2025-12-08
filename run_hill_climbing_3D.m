@@ -1,17 +1,17 @@
-% Script: run_HC_3D.m
 % Visualização 3D do Multiple Restart Hill Climbing
-% Animação + Gráficos de Análise (Dark Mode)
+% Animação + Gráficos de Análise 
 clear; clc; close all;
 
 % --- CONFIGURAÇÕES ---
 OPCAO_FUNCAO = 1;   % 1 (Schaffer) ou 2 (Rastrigin)
 VELOCIDADE = 2;     % 1=Rápido, 2=Normal
 
-NUM_RESTARTS = 10;  % Quantas vezes reinicia
-ITERATIONS = 50;    % Passos por reinicialização
-STEP_SIZE = 0.1;    % Tamanho do passo
+% Parametros iniciais
+NUM_RESTARTS = 10;  
+ITERATIONS = 50;    
+STEP_SIZE = 0.1;    
 
-% Cores Dark Mode
+% Cores 
 BG_COLOR = [0.1 0.1 0.1]; 
 AX_COLOR = [1 1 1]; 
 
@@ -56,7 +56,7 @@ h_curr = plot3(0,0,0, 'o', 'MarkerSize', 8, 'MarkerFaceColor', 'r', 'MarkerEdgeC
 h_path = plot3(0,0,0, 'k-', 'LineWidth', 1);
 h_best = plot3(0,0,0, 'p', 'MarkerSize', 20, 'MarkerFaceColor', 'c', 'MarkerEdgeColor', 'k');
 
-% --- LOOP DE RESTARTS ---
+%  LOOP DE RESTARTS 
 for r = 1:NUM_RESTARTS
     
     % Reinicialização Aleatória
@@ -78,7 +78,7 @@ for r = 1:NUM_RESTARTS
         
         nfit = fobj(nx, ny);
         
-        % Aceita se for melhor (Hill Climbing simples)
+        % Aceita se for melhor
         if nfit < curr_fit
             curr_x = nx; curr_y = ny; curr_fit = nfit;
             % Atualizar rastro apenas se moveu
@@ -93,7 +93,7 @@ for r = 1:NUM_RESTARTS
                 'ZData', global_best_fit + z_lift);
         end
         
-        % Guardar histórico GLOBAL (o melhor que já encontrámos até agora)
+        % Guardar histórico global
         hist_global_val(counter) = global_best_fit;
         hist_global_pos(counter, :) = global_best_sol;
         
@@ -103,7 +103,7 @@ for r = 1:NUM_RESTARTS
         
         title(sprintf('Restart %d/%d | Iter: %d | Global Best: %.5f', r, NUM_RESTARTS, i, global_best_fit));
         drawnow;
-        if mod(i, 5) == 0 % Pausa apenas a cada 5 frames para ser fluido
+        if mod(i, 5) == 0 
             pause(PAUSE_TIME);
         end
     end
@@ -112,7 +112,7 @@ end
 fprintf('HC Concluído. A gerar gráficos...\n');
 
 % =========================================================================
-% --- GRÁFICOS FINAIS (DARK MODE) ---
+% --- GRÁFICOS FINAIS ---
 % =========================================================================
 
 % FIGURA 1: Evolução das Variáveis (Do Melhor Global)

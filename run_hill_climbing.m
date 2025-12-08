@@ -1,18 +1,17 @@
-% Script: run_hill_climbing_2D.m
 % Visualização 2D (Vista de Topo) do Multiple Restart Hill Climbing
 % Inclui Animação + Gráficos de Análise Finais (Dark Mode)
 clear; clc; close all;
 
 % =========================================================================
-% --- CONFIGURAÇÕES ---
+% CONFIGURAÇÕES 
 % =========================================================================
 OPCAO_FUNCAO = 2;  % 1 (Schaffer) ou 2 (Rastrigin)
 VELOCIDADE = 1;    % 1 = Rápido, 2 = Normal
 
-% Parâmetros do Hill Climbing
-NUM_RESTARTS = 10;   % Quantas vezes reinicia
-ITERATIONS = 50;     % Passos por reinicialização
-STEP_SIZE = 0.1;     % Tamanho do passo
+% Parâmetros iniciais
+NUM_RESTARTS = 50;   
+ITERATIONS = 50;     
+STEP_SIZE = 0.5;     
 
 % Cores Dark Mode
 BG_COLOR = [0.1 0.1 0.1]; 
@@ -20,7 +19,7 @@ AX_COLOR = [1 1 1];
 
 % Configuração de Tempo
 if VELOCIDADE == 1
-    PAUSE_TIME = 0.001; 
+    PAUSE_TIME = 0.0000001; 
 else
     PAUSE_TIME = 0.02; 
 end
@@ -41,7 +40,7 @@ end
 fprintf('=== Visualização 2D HC: %s ===\n', nome);
 
 % =========================================================================
-% --- AMBIENTE 2D (ANIMAÇÃO) ---
+% AMBIENTE 2D (ANIMAÇÃO) 
 % =========================================================================
 figure('Name', ['Animação 2D HC - ' nome], 'Position', [50, 100, 700, 600]);
 
@@ -121,17 +120,17 @@ for r = 1:NUM_RESTARTS
         hist_global_val(counter) = global_best_fit;
         hist_global_pos(counter, :) = global_best_sol;
         
-        % Atualizar Animação
-        set(h_curr, 'XData', curr_x, 'YData', curr_y);
-        set(h_path, 'XData', path_x, 'YData', path_y);
-        
-        title(sprintf('Restart %d/%d | Iter: %d | Global Best: %.5f', r, NUM_RESTARTS, i, global_best_fit));
-        drawnow;
-        
-        % Pausa (apenas a cada poucos frames para não travar muito se for rápido)
-        if VELOCIDADE == 2 || mod(i, 5) == 0
-            pause(PAUSE_TIME);
-        end
+        % % Atualizar Animação
+        % set(h_curr, 'XData', curr_x, 'YData', curr_y);
+        % set(h_path, 'XData', path_x, 'YData', path_y);
+        % 
+        % title(sprintf('Restart %d/%d | Iter: %d | Global Best: %.5f', r, NUM_RESTARTS, i, global_best_fit));
+        % drawnow;
+        % 
+        % % Pausa (apenas a cada poucos frames para não travar muito se for rápido)
+        % if VELOCIDADE == 2 || mod(i, 5) == 0
+        %     pause(PAUSE_TIME);
+        % end
     end
     
     % Marcar o final deste restart (onde ficou preso) - Quadrado preto
@@ -145,20 +144,33 @@ fprintf('HC Concluído. A gerar gráficos de análise...\n');
 % =========================================================================
 
 % FIGURA 1: Evolução das Variáveis (Do Melhor Global)
-figure('Name', 'Evolução das Variáveis (HC)', 'Color', BG_COLOR);
-plot(1:total_steps, hist_global_pos(:,1), 'c-', 'LineWidth', 1.5, 'DisplayName', 'x1'); hold on;
-plot(1:total_steps, hist_global_pos(:,2), 'y-', 'LineWidth', 1.5, 'DisplayName', 'x2');
-yline(0, 'w--');
-legend('Location', 'best', 'TextColor', AX_COLOR, 'EdgeColor', AX_COLOR);
-title('Evolução das Variáveis (Melhor Global)', 'Color', AX_COLOR);
-xlabel('Iterações Totais (Acumuladas)', 'Color', AX_COLOR); ylabel('Valor', 'Color', AX_COLOR);
-set(gca, 'Color', BG_COLOR, 'XColor', AX_COLOR, 'YColor', AX_COLOR, 'GridColor', AX_COLOR);
-grid on;
+% figure('Name', 'Evolução das Variáveis (HC)', 'Color', BG_COLOR);
+% plot(1:total_steps, hist_global_pos(:,1), 'c-', 'LineWidth', 1.5, 'DisplayName', 'x1'); hold on;
+% plot(1:total_steps, hist_global_pos(:,2), 'y-', 'LineWidth', 1.5, 'DisplayName', 'x2');
+% yline(0, 'w--');
+% legend('Location', 'best', 'TextColor', AX_COLOR, 'EdgeColor', AX_COLOR);
+% title('Evolução das Variáveis (Melhor Global)', 'Color', AX_COLOR);
+% xlabel('Iterações Totais (Acumuladas)', 'Color', AX_COLOR); ylabel('Valor', 'Color', AX_COLOR);
+% set(gca, 'Color', BG_COLOR, 'XColor', AX_COLOR, 'YColor', AX_COLOR, 'GridColor', AX_COLOR);
+% grid on;
+% 
+% % FIGURA 2: Convergência do Custo
+% figure('Name', 'Convergência do Custo (HC)', 'Color', BG_COLOR);
+% plot(1:total_steps, hist_global_val, 'g-', 'LineWidth', 2);
+% title('Convergência da Função Custo (Melhor Global)', 'Color', AX_COLOR);
+% xlabel('Iterações Totais (Acumuladas)', 'Color', AX_COLOR); ylabel('Fitness f(x)', 'Color', AX_COLOR);
+% set(gca, 'Color', BG_COLOR, 'XColor', AX_COLOR, 'YColor', AX_COLOR, 'GridColor', AX_COLOR);
+% grid on;
+set(h_curr, 'XData', curr_x, 'YData', curr_y);
+    
+% Atualiza a estrela do melhor global (caso tenha mudado neste run)
+set(h_best, 'XData', global_best_sol(1), 'YData', global_best_sol(2));
 
-% FIGURA 2: Convergência do Custo
-figure('Name', 'Convergência do Custo (HC)', 'Color', BG_COLOR);
-plot(1:total_steps, hist_global_val, 'g-', 'LineWidth', 2);
-title('Convergência da Função Custo (Melhor Global)', 'Color', AX_COLOR);
-xlabel('Iterações Totais (Acumuladas)', 'Color', AX_COLOR); ylabel('Fitness f(x)', 'Color', AX_COLOR);
-set(gca, 'Color', BG_COLOR, 'XColor', AX_COLOR, 'YColor', AX_COLOR, 'GridColor', AX_COLOR);
-grid on;
+% Marca visualmente onde este restart terminou (quadrado preto)
+plot(curr_x, curr_y, 'ks', 'MarkerSize', 4, 'MarkerFaceColor', 'k');
+
+% Atualiza o título
+title(sprintf('Restart %d/%d (Finalizado) | Global Best: %.5f', r, NUM_RESTARTS, global_best_fit));
+
+% Força o desenho AGORA (apenas 1 vez por restart)
+drawnow;

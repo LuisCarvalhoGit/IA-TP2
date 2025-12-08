@@ -1,12 +1,11 @@
-% Script: run_PSO_2D.m
 % Visualização 2D (Vista de Topo) + Gráficos de Análise Separados
 clear; clc; close all;
 
-% --- CONFIGURAÇÕES ---
+% Parametros iniciais
 OPCAO_FUNCAO = 2;  % 1 ou 2
-VELOCIDADE = 2;    % 1=Rápido, 2=Normal
+VELOCIDADE = 1;    % 1=Rápido, 2=Normal
 
-SWARM_SIZE = 40;   
+SWARM_SIZE = 20;   
 MAX_IT = 80;       
 
 % Cores Dark Mode
@@ -29,7 +28,6 @@ end
 
 fprintf('=== Visualização 2D PSO: %s ===\n', nome);
 
-% --- AMBIENTE 2D (ANIMAÇÃO) ---
 figure('Name', ['Animação 2D - ' nome], 'Position', [50, 100, 700, 600]);
 [X, Y] = meshgrid(linspace(lim_min, lim_max, 100));
 Z = fobj(X, Y);
@@ -39,7 +37,7 @@ axis equal; axis([lim_min lim_max lim_min lim_max]);
 xlabel('x1'); ylabel('x2'); title([nome ' - Inicialização']);
 plot(0, 0, 'w+', 'MarkerSize', 15, 'LineWidth', 2); 
 
-% --- INICIALIZAÇÃO PSO ---
+% Inicialização PSO
 num_vars = 2;
 vmax = 0.15 * (lim_max - lim_min);
 c1 = 2.0; c2 = 2.0;
@@ -67,7 +65,7 @@ h_swarm = plot(pos(:,1), pos(:,2), 'ko', 'MarkerFaceColor', 'w', 'MarkerSize', 6
 h_best = plot(gbest_sol(1), gbest_sol(2), 'p', ...
     'MarkerSize', 18, 'MarkerFaceColor', 'm', 'MarkerEdgeColor', 'k');
 
-% --- LOOP PRINCIPAL ---
+% Loop principal
 for it = 1:MAX_IT
     w = 0.9 - ((0.9 - 0.4) * it / MAX_IT);
     
@@ -100,7 +98,7 @@ end
 fprintf('Animação concluída. A gerar gráficos de análise...\n');
 
 % =========================================================================
-% --- GRÁFICOS FINAIS INDEPENDENTES (DARK MODE) ---
+%                               GRÁFICOS
 % =========================================================================
 
 % FIGURA 1: Evolução das Variáveis
